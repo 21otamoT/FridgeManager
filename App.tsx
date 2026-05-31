@@ -1,20 +1,94 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+// App.tsx
+import "react-native-gesture-handler";
+import React from "react";
+import { StatusBar } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
-export default function App() {
+import HomeScreen from "./src/screens/HomeScreen";
+import AlertScreen from "./src/screens/AlertScreen";
+import ScanScreen from "./src/screens/ScanScreen";
+import AddItemScreen from "./src/screens/AddItemScreen";
+import ItemDetailScreen from "./src/screens/ItemDetailScreen";
+
+export type RootStackParamList = {
+  Main: undefined;
+  Scan: undefined;
+  AddItem: { barcode?: string; name?: string };
+  ItemDetail: { itemId: string };
+};
+
+export type TabParamList = {
+  Home: undefined;
+  Alert: undefined;
+};
+
+const Tab = createBottomTabNavigator<TabParamList>();
+const Stack = createStackNavigator<RootStackParamList>();
+
+function TabNavigator() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarActiveTintColor: "#52B788",
+        tabBarInactiveTintColor: "#6B7280",
+        tabBarStyle: { height: 64, paddingBottom: 8, paddingTop: 8 },
+      }}
+    >
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{ tabBarLabel: "冷蔵庫" }}
+      />
+      <Tab.Screen
+        name="Alert"
+        component={AlertScreen}
+        options={{ tabBarLabel: "アラート" }}
+      />
+    </Tab.Navigator>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default function App() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <StatusBar barStyle="light-content" backgroundColor="#1B4332" />
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerStyle: { backgroundColor: "#1B4332" },
+              headerTintColor: "#FFFFFF",
+              headerTitleStyle: { fontWeight: "bold" },
+            }}
+          >
+            <Stack.Screen
+              name="Main"
+              component={TabNavigator}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Scan"
+              component={ScanScreen}
+              options={{ title: "バーコードスキャン" }}
+            />
+            <Stack.Screen
+              name="AddItem"
+              component={AddItemScreen}
+              options={{ title: "食品を追加" }}
+            />
+            <Stack.Screen
+              name="ItemDetail"
+              component={ItemDetailScreen}
+              options={{ title: "食品詳細" }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
+}
