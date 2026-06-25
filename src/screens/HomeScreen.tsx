@@ -23,6 +23,7 @@ import {
   formatExpiryLabel,
 } from "../types";
 import { RootStackParamList } from "../../App";
+import AdBanner from "../components/Adbanner";
 
 type Nav = StackNavigationProp<RootStackParamList>;
 
@@ -231,6 +232,7 @@ export default function HomeScreen() {
       >
         <Text style={styles.fabText}>＋</Text>
       </TouchableOpacity>
+      <AdBanner />
     </View>
   );
 }
