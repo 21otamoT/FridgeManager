@@ -7,10 +7,13 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
-      "android": { "buildType": "aab" },
       "env": {
         "EAS_BUILD_PROFILE": "development"
       }
+    },
+    "development_aab": {
+      "extends": "development",
+      "android": { "buildType": "app-bundle" }
     },
     "preview": {
       "distribution": "internal",

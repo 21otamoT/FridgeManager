@@ -33,7 +33,7 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "login": "eas login",
-    "build_android_dev": "eas build --profile development --platform android",
+    "build_android_dev": "eas build --profile development_aab --platform android",
     "build_android_prod": "eas build --profile production --platform android",
     "build_android_preview": "eas build --profile preview --platform android",
     "prebuild": "npx expo prebuild --platform android --clean"
