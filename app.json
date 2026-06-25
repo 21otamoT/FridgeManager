@@ -7,22 +7,17 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.yukihiro.FridgeManager"
     },
     "android": {
-      "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
-      },
       "predictiveBackGestureEnabled": false,
       "permissions": [
         "CAMERA",
         "android.permission.CAMERA",
         "android.permission.RECORD_AUDIO"
       ],
-      "package": "com.anonymous.FridgeManager"
+      "package": "com.yukihiro.FridgeManager"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -35,6 +30,11 @@
           "cameraPermission": "バーコードスキャンに使用します"
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "dbe9980d-8193-4196-a89c-42394c8e2b79"
+      }
+    }
   }
 }

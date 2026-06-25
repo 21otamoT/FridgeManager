@@ -64,16 +64,22 @@ export default function ScanScreen() {
   }
 
   const fetchProductName = async (barcode: string): Promise<string | null> => {
+    const YAHOO_APP_ID = process.env.EXPO_PUBLIC_YAHOO_APP_ID;
+    if (!YAHOO_APP_ID) {
+      console.error("YAHOO_APP_ID is not set");
+      return null;
+    }
     try {
-      const res = await fetch(
-        `https://world.openfoodfacts.org/api/v0/product/${barcode}.json`,
-      );
+      console.log("スキャンしたバーコード:", barcode);
+      const url = `https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch?appid=${YAHOO_APP_ID}&jan_code=${barcode}`;
+      const res = await fetch(url);
       const data = await res.json();
-      if (data.status === 1 && data.product?.product_name_ja) {
-        return data.product.product_name_ja;
-      }
-      if (data.status === 1 && data.product?.product_name) {
-        return data.product.product_name;
+      if (data.hits && data.hits.length > 0) {
+        const productName = data.hits[0].name;
+        console.log(`✅ 取得した商品名:`, productName);
+        return productName;
+      } else {
+        console.log(`❌ 該当する商品が見つかりませんでした`);
       }
     } catch (_) {
       // ネットワークエラーは無視
