@@ -13,6 +13,9 @@
     },
     "development_aab": {
       "extends": "development",
+      "developmentClient": false,
+      "distribution": "store",
+      "autoIncrement": true,
       "android": { "buildType": "app-bundle" }
     },
     "preview": {

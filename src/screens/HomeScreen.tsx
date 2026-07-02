@@ -1,5 +1,5 @@
 // src/screens/HomeScreen.tsx
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   View,
   Text,
@@ -24,6 +24,7 @@ import {
 } from "../types";
 import { RootStackParamList } from "../../App";
 import AdBanner from "../components/Adbanner";
+import { MobileAds } from "react-native-google-mobile-ads";
 
 type Nav = StackNavigationProp<RootStackParamList>;
 
@@ -100,6 +101,16 @@ export default function HomeScreen() {
         : status === "warning"
           ? COLORS.warn
           : COLORS.ok;
+
+    useEffect(() => {
+      // 広告の初期化
+      MobileAds()
+        .initialize()
+        .then(() => {
+          // 初期化完了後の処理
+          console.log("AdMob initialized");
+        });
+    }, []);
 
     return (
       <TouchableOpacity
