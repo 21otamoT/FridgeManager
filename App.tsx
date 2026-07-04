@@ -1,6 +1,6 @@
 // App.tsx
 import "react-native-gesture-handler";
-import React from "react";
+import React, { useEffect } from "react";
 import { StatusBar } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -13,6 +13,8 @@ import AlertScreen from "./src/screens/AlertScreen";
 import ScanScreen from "./src/screens/ScanScreen";
 import AddItemScreen from "./src/screens/AddItemScreen";
 import ItemDetailScreen from "./src/screens/ItemDetailScreen";
+import MobileAds from "react-native-google-mobile-ads";
+import Constants from "expo-constants";
 
 export type RootStackParamList = {
   Main: undefined;
@@ -54,6 +56,20 @@ function TabNavigator() {
 }
 
 export default function App() {
+  useEffect(() => {
+    const isExpoGo = Constants.appOwnership === "expo";
+    if (isExpoGo) {
+      console.log("Running in Expo Go, skipping AdMob initialization");
+      return;
+    }
+    // 広告の初期化
+    MobileAds()
+      .initialize()
+      .then(() => {
+        // 初期化完了後の処理
+        console.log("AdMob initialized");
+      });
+  }, []);
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>

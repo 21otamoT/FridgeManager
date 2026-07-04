@@ -1,6 +1,14 @@
 import { ConfigContext, ExpoConfig } from "@expo/config";
 
+console.log("🔥 読み込まれたアプリID:", process.env.NODE_ENV);
 console.log("🔥 読み込まれたアプリID:", process.env.EXPO_PUBLIC_ADMOB_APP_ID);
+console.log(
+  "🔥 読み込まれたアプリID:",
+  process.env.EXPO_PUBLIC_ADMOB_BANNER_ID,
+);
+console.log("🔥 読み込まれたアプリID:", process.env.EXPO_PUBLIC_TOKEN);
+console.log("🔥 読み込まれたアプリID:", process.env.EXPO_PUBLIC_API_URL);
+console.log("🔥 読み込まれたアプリID:", process.env.EXPO_PUBLIC_YAHOO_APP_ID);
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: "FridgeManager",
