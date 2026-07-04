@@ -25,3 +25,11 @@ npm run build_android_prod
 ```
 npm run build_android_prod
 ```
+
+## prebuild
+
+- prebuild後はlocal.propertiesを作成し下記を記述する
+
+```
+sdk.dir=/Users/hiroseyukihiro/Library/Android/sdk
+```

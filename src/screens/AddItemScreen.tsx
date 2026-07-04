@@ -25,6 +25,7 @@ import {
   UNIT_OPTIONS,
 } from "../types";
 import { RootStackParamList } from "../../App";
+import { useApi } from "../hooks/useApi";
 
 type Route = RouteProp<RootStackParamList, "AddItem">;
 type Nav = StackNavigationProp<RootStackParamList>;
@@ -54,6 +55,7 @@ export default function AddItemScreen() {
   const route = useRoute<Route>();
   const navigation = useNavigation<Nav>();
   const { addItem } = useFridgeStore();
+  const { addProduct } = useApi();
 
   const [name, setName] = useState(route.params?.name ?? "");
   const [barcode] = useState(route.params?.barcode ?? "");
@@ -69,6 +71,11 @@ export default function AddItemScreen() {
   });
   const [showDatePicker, setShowDatePicker] = useState(false);
 
+  const [needsRegistration] = useState(
+    route.params?.needsRegistration ?? false,
+  );
+  const [saving, setSaving] = useState(false);
+
   const handleDateChange = (_event: DateTimePickerEvent, date?: Date) => {
     setShowDatePicker(Platform.OS === "ios");
     if (date) setExpiryDate(date);
@@ -78,7 +85,7 @@ export default function AddItemScreen() {
     return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!name.trim()) {
       Alert.alert("入力エラー", "食品名を入力してください");
       return;
@@ -87,6 +94,18 @@ export default function AddItemScreen() {
     if (isNaN(qty) || qty <= 0) {
       Alert.alert("入力エラー", "数量を正しく入力してください");
       return;
+    }
+
+    setSaving(true);
+
+    // 検索でヒットしなかった商品はDBに登録して、次回以降スキャンした時に見つかるようにする
+    if (needsRegistration && barcode) {
+      try {
+        await addProduct(barcode, name.trim());
+      } catch (error) {
+        console.error("商品登録に失敗しました:", error);
+        // 登録に失敗してもローカルへの保存は続行する（致命的エラーにしない）
+      }
     }
 
     addItem({
@@ -99,6 +118,7 @@ export default function AddItemScreen() {
       memo: memo.trim() || undefined,
     });
 
+    setSaving(false);
     navigation.goBack();
   };
 
@@ -142,6 +162,7 @@ export default function AddItemScreen() {
                 key={cat}
                 style={[styles.catBtn, category === cat && styles.catBtnActive]}
                 onPress={() => setCategory(cat)}
+                disabled={saving}
               >
                 <Text style={styles.catBtnEmoji}>{CATEGORY_ICONS[cat]}</Text>
                 <Text
@@ -180,6 +201,7 @@ export default function AddItemScreen() {
                   key={u}
                   style={[styles.unitBtn, unit === u && styles.unitBtnActive]}
                   onPress={() => setUnit(u)}
+                  disabled={saving}
                 >
                   <Text
                     style={[
@@ -202,6 +224,7 @@ export default function AddItemScreen() {
             <TouchableOpacity
               style={styles.toggleWrap}
               onPress={() => setHasExpiry(!hasExpiry)}
+              disabled={saving}
             >
               <View style={[styles.toggle, hasExpiry && styles.toggleOn]}>
                 <View
@@ -221,6 +244,7 @@ export default function AddItemScreen() {
             <TouchableOpacity
               style={styles.dateBtn}
               onPress={() => setShowDatePicker(true)}
+              disabled={saving}
             >
               <Text style={styles.dateIcon}>📅</Text>
               <Text style={styles.dateBtnText}>{formatDate(expiryDate)}</Text>
@@ -260,6 +284,7 @@ export default function AddItemScreen() {
         <TouchableOpacity
           style={styles.saveBtn}
           onPress={handleSave}
+          disabled={saving}
           activeOpacity={0.8}
         >
           <Text style={styles.saveBtnText}>🧊 冷蔵庫に登録する</Text>

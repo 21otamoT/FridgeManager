@@ -19,7 +19,7 @@ import Constants from "expo-constants";
 export type RootStackParamList = {
   Main: undefined;
   Scan: undefined;
-  AddItem: { barcode?: string; name?: string };
+  AddItem: { barcode?: string; name?: string; needsRegistration?: boolean };
   ItemDetail: { itemId: string };
 };
 

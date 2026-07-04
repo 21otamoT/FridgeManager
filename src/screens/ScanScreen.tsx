@@ -95,6 +95,7 @@ export default function ScanScreen() {
     navigation.replace("AddItem", {
       barcode: data,
       name: name ?? undefined,
+      needsRegistration: name === null,
     });
   };
 
