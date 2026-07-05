@@ -15,6 +15,7 @@ import AddItemScreen from "./src/screens/AddItemScreen";
 import ItemDetailScreen from "./src/screens/ItemDetailScreen";
 import MobileAds from "react-native-google-mobile-ads";
 import Constants from "expo-constants";
+import { NavigationBar } from "expo-navigation-bar";
 
 export type RootStackParamList = {
   Main: undefined;
@@ -72,6 +73,7 @@ export default function App() {
   }, []);
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
+      <NavigationBar hidden={true} />
       <SafeAreaProvider>
         <StatusBar barStyle="light-content" backgroundColor="#1B4332" />
         <NavigationContainer>
