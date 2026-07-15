@@ -26,6 +26,7 @@ import {
 } from "../types";
 import { RootStackParamList } from "../../App";
 import { useApi } from "../hooks/useApi";
+import LoadingOverlay from "../components/Loadingoverlay";
 
 type Route = RouteProp<RootStackParamList, "AddItem">;
 type Nav = StackNavigationProp<RootStackParamList>;
@@ -290,6 +291,7 @@ export default function AddItemScreen() {
           <Text style={styles.saveBtnText}>🧊 冷蔵庫に登録する</Text>
         </TouchableOpacity>
       </View>
+      <LoadingOverlay visible={saving} message="登録中..." />
     </KeyboardAvoidingView>
   );
 }
