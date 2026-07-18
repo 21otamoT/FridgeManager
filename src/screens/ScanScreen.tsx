@@ -14,6 +14,7 @@ import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../App";
 import { useApi } from "../hooks/useApi";
+import LoadingOverlay from "../components/Loadingoverlay";
 
 type Nav = StackNavigationProp<RootStackParamList>;
 
@@ -170,6 +171,7 @@ export default function ScanScreen() {
           </View>
         </View>
       </View>
+      <LoadingOverlay visible={scanned} message="読み取り中..." />
     </View>
   );
 }
